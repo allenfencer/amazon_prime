@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key key}) : super(key: key);
+
+class HomeData extends StatelessWidget {
+  const HomeData({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               Image.network('https://akm-img-a-in.tosshub.com/indiatoday/images/story/202107/pjimage_38.jpg?rRT5IctR_IfOJGe0hPE1eTxOF.cgcB.V&size=770:433',fit: BoxFit.cover,),
             ],
           ),
-        )
+        ),
       ],
     );
   }
