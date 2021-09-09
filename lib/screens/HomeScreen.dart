@@ -16,23 +16,26 @@ class HomeScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-        elevation: 0,
-        backgroundColor: bg,
-        title: Image.asset('images/primelogo.png',height: 25,),
-        centerTitle: true,
-        bottom: TabBar(
-          indicatorWeight: 3,
-          indicatorColor: white,
-          tabs: [
-            Tab(child: Text('Home')),
-            Tab(child: Text('TV Shows')),
-            Tab(child: Text('Movies')),
-            Tab(child: Text('Kids')),
-          ],
+          elevation: 0,
+          backgroundColor: bg,
+          title: Image.asset(
+            'images/primelogo.png',
+            height: 25,
+          ),
+          centerTitle: true,
+          bottom: TabBar(
+            indicatorWeight: 3,
+            indicatorColor: white,
+            tabs: [
+              Tab(child: Text('Home')),
+              Tab(child: Text('TV Shows')),
+              Tab(child: Text('Movies')),
+              Tab(child: Text('Kids')),
+            ],
+          ),
         ),
-      ),
         body: TabBarView(
-          children:[
+          children: [
             HomeData(),
             TVScreen(),
             Movies(),
