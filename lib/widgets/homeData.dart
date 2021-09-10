@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:http/http.dart'as http;
 
+Map data;
 
 class HomeData extends StatefulWidget {
   const HomeData({Key key}) : super(key: key);
@@ -18,19 +19,21 @@ class HomeData extends StatefulWidget {
 
 class _HomeDataState extends State<HomeData> {
   Future <Search> getTopMovies()async{
-    String url='http://www.omdbapi.com/?apikey=$apiKey&type=movie&s=tiger';
+    String url='https://www.omdbapi.com/?apikey=$apiKey&type=movie&s=kong';
     final response = await http.get(Uri.parse(url));
     if(response.statusCode==200)
       {
-        final data=jsonDecode(response.body);
-        final search = Search.fromJson(data);
-        print(data);
-        return search;
+        data=jsonDecode(response.body);
+        return Search.fromMap(data);
       }
     else{
       throw Exception('Could not fetch data');
     }
   }
+
+  List <String> languages=[
+    'English','Hindi','Malayalam','Tamil','Urdu','Telugu','Kannada','Punjabi','Marathi'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -62,30 +65,67 @@ class _HomeDataState extends State<HomeData> {
             ),
           ),
           //TOP MOVIES
-          textStyling('Top Movies', 18, Colors.white, FontWeight.bold),
+          textStyling('Top Movies', 18, white, FontWeight.bold),
           Container(
+            padding: EdgeInsets.only(left: 5,right: 5),
             height: 150,
             child: FutureBuilder(
               future: getTopMovies(),
               builder: (BuildContext context,snapshot){
                 if(snapshot.hasData){
-                  final searchResult=snapshot.data;
-                  print(searchResult);
                   return ListView.builder(
+                    physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: searchResult.length,
+                    itemCount: data['Search'].length,
                     itemBuilder: (BuildContext context,index){
+                      Search s1= Search.fromMap(data);
                       return Container(
-                        height: 100,
-                        width: 250,
-                        child: Image.network(''),
+                        margin: EdgeInsets.only(left: 10,right: 10),
+                        height: 80,
+                        clipBehavior: Clip.antiAlias,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Image.network(s1.search[index].poster,fit: BoxFit.fill,scale: 0.5,filterQuality: FilterQuality.high,),
                       );
                     },
                   );
                 }else{
                   return Center(child: CircularProgressIndicator(),);
                 }
+              },
+            ),
+          ),
+          textStyling('Watch in Your Language', 18, white, FontWeight.bold),
+          Container(
+            padding: EdgeInsets.only(left: 5,right: 5),
+            height: 120,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: languages.length,
+              itemBuilder: (BuildContext context,index){
+                return Container(
+                  margin: EdgeInsets.only(left: 10,right: 10),
+                  height: 100,
+                  clipBehavior: Clip.antiAlias,
+                  width: 140,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      colors: [
+                        Color(0xff2E3192),
+                        Color(0xff1BFFFF),
+                      ]
+                    ),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Center(
+                    child: Text(languages[index],style: TextStyle(fontSize: 23,color: Colors.white,fontWeight: FontWeight.bold),),
+                  ),
+                );
               },
             ),
           ),
